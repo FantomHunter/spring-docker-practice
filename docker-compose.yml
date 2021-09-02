@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  mysql-standalone2:
+  mysql-standalone3:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=admin123
@@ -10,17 +10,20 @@ services:
       - MYSQL_PASSWORD=testuser@123
   spring-docker-practice-app:
     image: spring-docker-practice-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - DB_SERVER=mysql-standalone3
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testuser@123
 #    volumes:
 #      - mysql-data-1:/var/lib/mysql
     ports:
       - 8082:8080
-    build:
-      context: ./
-      dockerfile: Dockerfile
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-standalone2:3306/database?autoReconnect=true&useSSL=false
     depends_on:
-      - mysql-standalone2
+      - mysql-standalone3
 #volumes:
 #  mysql-data-1:
 
